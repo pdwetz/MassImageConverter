@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("MassImageConverter")]
-[assembly: AssemblyCopyright("Copyright ©  2017 Peter Wetzel")]
+[assembly: AssemblyCopyright("Copyright ©  2018 Peter Wetzel")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]

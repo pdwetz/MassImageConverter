@@ -1,6 +1,6 @@
 ﻿/*
     MassImageConverter - Will convert images with given extension to JPEG
-    Copyright (C) 2016 Peter Wetzel
+    Copyright (C) 2018 Peter Wetzel
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,7 +16,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 using CommandLine;
-using CommandLine.Text;
 
 namespace MassImageConverter
 {
@@ -28,7 +27,7 @@ namespace MassImageConverter
         [Option('e', "extensions", Required = true, HelpText = "Extensions (comma separated) of image files types to convert")]
         public string Extensions { get; set; }
 
-        [Option('q', "quality", DefaultValue = 90, HelpText = "JPEG quality (1.0-100)")]
+        [Option('q', "quality", Default = 90, HelpText = "JPEG quality (1.0-100)")]
         public long Quality { get; set; }
 
         [Option('k', "keep", HelpText = "Flag for keeping original files.")]
@@ -45,21 +44,5 @@ namespace MassImageConverter
 
         [Option('d', "debug", HelpText = "Flag for debug only mode. No files will be deleted.")]
         public bool Debug { get; set; }
-
-        [HelpOption]
-        public string GetUsage()
-        {
-            var help = new HelpText
-            {
-                Heading = new HeadingInfo("MassImageConverter", "1.0.0.0"),
-                Copyright = new CopyrightInfo("Peter Wetzel", 2016),
-                AdditionalNewLineAfterOption = true,
-                AddDashesToOption = true
-            };
-            help.AddPreOptionsLine("This program comes with ABSOLUTELY NO WARRANTY; for details see license.txt.");
-            help.AddPreOptionsLine(@"Usage: MassImageConverter -f c:\somepath\xyx -e png,bmp");
-            help.AddOptions(this);
-            return help;
-        }
     }
 }
