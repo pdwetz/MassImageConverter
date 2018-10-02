@@ -1,6 +1,6 @@
 ﻿/*
     MassImageConverter - Will convert images with given extension to JPEG
-    Copyright (C) 2016 Peter Wetzel
+    Copyright (C) 2018 Peter Wetzel
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -28,15 +28,19 @@ namespace MassImageConverter
         static void Main(string[] args)
         {
             var initialColor = Console.ForegroundColor;
-            var options = new MassImageConverterOptions();
-            if (!Parser.Default.ParseArguments(args, options))
+            Parser.Default.ParseArguments<MassImageConverterOptions>(args)
+                .WithParsed<MassImageConverterOptions>(options => Process(options));
+            Console.ForegroundColor = initialColor;
+        }
+
+        private static void Process(MassImageConverterOptions options)
+        {
+            var converter = new ImageConverter
             {
-                return;
-            }
-            var converter = new ImageConverter();
-            converter.IsKeeper = options.Keep;
-            converter.Quality = options.Quality;
-            converter.Extensions = ParseExtensions(options.Extensions);
+                IsKeeper = options.Keep,
+                Quality = options.Quality,
+                Extensions = ParseExtensions(options.Extensions)
+            };
             if (!converter.Extensions.Any())
             {
                 converter.Extensions.Add(".bmp");
@@ -81,7 +85,6 @@ namespace MassImageConverter
             converter.Process(options.FolderPath);
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine($"Converted {converter.Completed.Count:#,##0} files in {converter.ElapsedMS:#,##0} ms. Failed on {converter.Failed.Count:#,##0} files.");
-            Console.ForegroundColor = initialColor;
         }
 
         private static List<string> ParseExtensions(string raw)
