@@ -161,9 +161,8 @@ namespace MassImageConverter.Core
                 }
                 else
                 {
-                    int i;
                     string val = newFileName.Substring(index + 1);
-                    if (!Int32.TryParse(val, out i))
+                    if (!Int32.TryParse(val, out var i))
                     {
                         newFileName += "-1";
                     }
