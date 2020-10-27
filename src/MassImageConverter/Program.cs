@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CommandLine;
 using MassImageConverter.Core;
+using WetzUtilities;
 
 namespace MassImageConverter
 {
@@ -89,11 +90,11 @@ namespace MassImageConverter
 
         private static List<string> ParseExtensions(string raw)
         {
-            if (string.IsNullOrWhiteSpace(raw))
+            if (raw.IsEmpty())
             {
                 return new List<string>();
             }
-            List<string> ext = raw.Split(',').Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
+            List<string> ext = raw.Split(',').Where(x => x.IsNotEmpty()).ToList();
             for (int i = 0; i < ext.Count; i++)
             {
                 if (ext[i][0] != '.')
