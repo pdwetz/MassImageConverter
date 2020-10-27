@@ -23,6 +23,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using Microsoft.VisualBasic.FileIO;
+using WetzUtilities;
 
 namespace MassImageConverter.Core
 {
@@ -65,7 +66,7 @@ namespace MassImageConverter.Core
         /// <param name="path">Folder path to process</param>
         public void Process(string path)
         {
-            if (string.IsNullOrWhiteSpace(path))
+            if (path.IsEmpty())
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Path required");
@@ -102,7 +103,8 @@ namespace MassImageConverter.Core
                     {
                         if (!IsDebugOnly)
                         {
-                            resultImage.Converted = GetUniquePath(f);
+                            string newFileName = Path.GetFileNameWithoutExtension(f);
+                            resultImage.Converted = FileUtilities.GetNextName(Path.GetDirectoryName(f), $"{newFileName}.jpg");
                             using (var bitmap = new Bitmap(f))
                             {
                                 bitmap.Save(resultImage.Converted, codec, encoders);
@@ -145,37 +147,6 @@ namespace MassImageConverter.Core
             }
             timer.Stop();
             ElapsedMS = timer.ElapsedMilliseconds;
-        }
-
-        private static string GetUniquePath(string filePath)
-        {
-            string dir = Path.GetDirectoryName(filePath);
-            string newFileName = Path.GetFileNameWithoutExtension(filePath);
-            string newFilePath = Path.Combine(dir, $"{newFileName}.jpg");
-            while (File.Exists(newFilePath))
-            {
-                int index = newFileName.LastIndexOf('-');
-                if (index < 0)
-                {
-                    newFileName += "-1";
-                }
-                else
-                {
-                    string val = newFileName.Substring(index + 1);
-                    if (!Int32.TryParse(val, out var i))
-                    {
-                        newFileName += "-1";
-                    }
-                    else
-                    {
-                        i++;
-                        newFileName = newFileName.Substring(0, index);
-                        newFileName += $"-{i}";
-                    }
-                }
-                newFilePath = Path.Combine(dir, $"{newFileName}.jpg");
-            }
-            return newFilePath;
         }
     }
 }
