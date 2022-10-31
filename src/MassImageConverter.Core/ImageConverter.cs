@@ -1,6 +1,6 @@
 ﻿/*
     MassImageConverter - Will convert images with given extension to JPEG
-    Copyright (C) 2016 Peter Wetzel
+    Copyright (C) 2022 Peter Wetzel
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ namespace MassImageConverter.Core
         /// <summary>
         /// File extensions to process
         /// </summary>
-        public List<string> Extensions { get; set; }
+        public Dictionary<string, string> Extensions { get; set; }
         /// <summary>
         /// JPEG quality (1.0-100)
         /// </summary>
@@ -90,11 +90,11 @@ namespace MassImageConverter.Core
             using (var encoders = new EncoderParameters(1))
             {
                 encoders.Param[0] = new EncoderParameter(Encoder.Quality, Quality);
-                string filters = Extensions.Count == 1 ? $"*{Extensions[0]}" : "*.*";
+                string filters = Extensions.Count == 1 ? $"*{Extensions.Keys.First()}" : "*.*";
                 var files = Directory.GetFiles(path, filters, System.IO.SearchOption.AllDirectories);
                 foreach (var f in files)
                 {
-                    if (!Extensions.Contains(Path.GetExtension(f)))
+                    if (!Extensions.ContainsKey(Path.GetExtension(f)))
                     {
                         continue;
                     }
@@ -109,7 +109,7 @@ namespace MassImageConverter.Core
                             {
                                 bitmap.Save(resultImage.Converted, codec, encoders);
                             }
-                            FileInfo oldFile = new FileInfo(f);
+                            var oldFile = new FileInfo(f);
                             File.SetCreationTime(resultImage.Converted, oldFile.CreationTime);
                             File.SetLastWriteTime(resultImage.Converted, oldFile.LastWriteTime);
                             if (!IsKeeper)
