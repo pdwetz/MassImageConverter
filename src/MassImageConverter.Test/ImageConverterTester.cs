@@ -30,7 +30,8 @@ namespace MassImageConverter.Test
         {
             string folderPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "assets");
             var converter = new ImageConverter();
-            converter.Extensions = new List<string> { ".png" };
+            converter.Extensions = new Dictionary<string, string>();
+            converter.Extensions.Add(".png", ".png");
             converter.IsDebugOnly = true;
             converter.IsVerbose = true;
             converter.Process(folderPath);
@@ -43,7 +44,8 @@ namespace MassImageConverter.Test
         {
             string folderPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "assets");
             var converter = new ImageConverter();
-            converter.Extensions = new List<string> { ".bmp" };
+            converter.Extensions = new Dictionary<string, string>();
+            converter.Extensions.Add(".bmp", ".bmp");
             converter.IsDebugOnly = true;
             converter.IsVerbose = true;
             converter.Process(folderPath);
@@ -56,7 +58,9 @@ namespace MassImageConverter.Test
         {
             string folderPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "assets");
             var converter = new ImageConverter();
-            converter.Extensions = new List<string> { ".png", ".bmp" };
+            converter.Extensions = new Dictionary<string, string>();
+            converter.Extensions.Add(".png", ".png");
+            converter.Extensions.Add(".bmp", ".bmp");
             converter.IsDebugOnly = true;
             converter.IsVerbose = true;
             converter.Process(folderPath);
@@ -69,7 +73,8 @@ namespace MassImageConverter.Test
         {
             string folderPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "assets");
             var converter = new ImageConverter();
-            converter.Extensions = new List<string> { ".bmp" };
+            converter.Extensions = new Dictionary<string, string>();
+            converter.Extensions.Add(".bmp", ".bmp");
             converter.IsDebugOnly = false;
             converter.IsKeeper = true;
             converter.IsVerbose = true;

@@ -44,8 +44,8 @@ namespace MassImageConverter
             };
             if (!converter.Extensions.Any())
             {
-                converter.Extensions.Add(".bmp");
-                converter.Extensions.Add(".png");
+                converter.Extensions.Add(".bmp", ".bmp");
+                converter.Extensions.Add(".png", ".png");
             }
             converter.IsDebugOnly = options.Debug;
             converter.IsHardDelete = options.HardDelete;
@@ -88,25 +88,25 @@ namespace MassImageConverter
             Console.WriteLine($"Converted {converter.Completed.Count:#,##0} files in {converter.ElapsedMS:#,##0} ms. Failed on {converter.Failed.Count:#,##0} files.");
         }
 
-        private static List<string> ParseExtensions(string raw)
+        private static Dictionary<string, string> ParseExtensions(string raw)
         {
             if (raw.IsEmpty())
             {
-                return new List<string>();
+                return new Dictionary<string, string>();
             }
-            List<string> ext = raw.Split(',').Where(x => x.IsNotEmpty()).ToList();
-            for (int i = 0; i < ext.Count; i++)
+            var extensions = raw.Split(',').Where(x => x.IsNotEmpty()).ToList();
+            for (var i = 0; i < extensions.Count; i++)
             {
-                if (ext[i][0] != '.')
+                if (extensions[i][0] != '.')
                 {
-                    ext[i] = $".{ext[i].Trim()}";
+                    extensions[i] = $".{extensions[i].Trim()}";
                 }
                 else
                 {
-                    ext[i] = ext[i].Trim();
+                    extensions[i] = extensions[i].Trim();
                 }
             }
-            return ext;
+            return extensions.ToDictionary(x => x);
         }
     }
 }
